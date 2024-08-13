@@ -47,7 +47,7 @@ def dump_preds_results(preds, save_path):
 def load_jsonl(data_path):
     datas = []
     if os.path.exists(data_path):
-        f = open(data_path, 'r')
+        f = open(data_path, 'r',encoding='utf-8')
         for line in f.readlines():
             datas.append(json.loads(line))
     else:

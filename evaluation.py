@@ -7,7 +7,7 @@ import pandas as pd
 
 from config import DATASET_METRIC
 from utils import ensure_dir
-
+from test_task import task_list
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser()
@@ -35,11 +35,11 @@ def scorer(dataset, predictions, answers, gold_anss):
     return round(100 * total_score / total_sample, 2), scores
 
 if __name__ == '__main__':
-    args = parse_args()
-    path = args.input_dir.rstrip("/")
+    # args = parse_args()
+    # path = args.input_dir.rstrip("/")
+    path='outputs'
     save_dir = f"{path}/eval_result/"
     ensure_dir(save_dir)
-    
 
     all_files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
     all_files.sort(key=custom_sort)
@@ -47,12 +47,12 @@ if __name__ == '__main__':
     all_results = dict()
     all_scores = dict()
     for filename in all_files:
-        if not filename.endswith("jsonl"):
+        if '.jsonl' not in  filename:
             continue
         predictions, answers, gold_anss, datas = [], [], [], []
         dataset = filename.split('.')[0]
         dataset_name = re.split('_.{1,3}k', dataset)[0]
-        length = dataset.split('_')[-1]
+        length = filename.split('_')[-1]
         with open(f"{path}/{filename}", "r", encoding="utf-8") as f:
             for line in f:
                 data = json.loads(line)
